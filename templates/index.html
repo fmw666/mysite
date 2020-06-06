@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>&emsp;Django&ensp;Web&ensp;项目&ensp;—&ensp;任务实战</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="icon" href="{% static 'images/code.png' %}">
+
+	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+	<noscript>
+        <link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" />
+    </noscript>
+</head>
+
+<body class="is-preload" onload="init()">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="content">
+				<div class="inner">
+					<h1 style="text-transform: none;">Django Web 实战项目</h1>
+					<p style="text-transform: none;">
+						{% if user.is_authenticated %}
+						你好，{{ user.username }}！<a style="cursor: pointer;" onclick="logout()">点击注销</a>
+						{% else %}
+						<a href="#login" onclick="setFocus()">点击登录</a>
+						{% endif %}
+					</p>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="#intro">项目介绍</a></li>
+					<li><a href="#login" onclick="setFocus()" {% if user.is_authenticated %}style="display: none;"{% else %}{% endif %}>登录/注册</a></li>
+					{% if user.is_authenticated %}
+					<li><a href="#task1">任务一</a></li>
+					<li><a href="#task2">任务二</a></li>
+					<li><a href="#task3">任务三</a></li>
+					<li><a href="#task4">任务四</a></li>
+					<li><a href="#task5">任务五</a></li>
+					<li><a href="#task6">任务六</a></li>
+					<li><a href="#task7">任务七</a></li>
+					<li><a href="#task8">任务八</a></li>
+					{% endif %}
+					<li><a href="#feedback">问题反馈</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Intro -->
+			<article id="intro">
+				<h2 class="major">💬 项目介绍</h2>
+				<span class="image main"><img src="{% static 'images/bg-code.jpg' %}" alt="" /></span>
+				<p>利用本学期所学知识开发出一个成熟的 Django Web 项目.</p>
+				<blockquote>
+					相关知识点：<b>Web 开发基础</b>、<b>MVC 开发模式</b>、<b>Django Web</b>、
+					<b>Mysql 数据库</b>、<b>前端开发</b>、<b>UI 框架 BootStrap</b> 等...
+				</blockquote>
+				<hr>
+				<p><b>项目包含内容：</b></p>
+				<ul>
+					<li>项目名&emsp; ——《博客系统》</li>
+					<li>项目功能 —— 博客阅读、用户登录、编写博客及发布</li>
+					<li>项目呈现 —— 部署到云服务器</li>
+				</ul>
+			</article>
+
+			<!-- Login -->
+			<article id="login">
+				<h2 class="major">😀 欢迎登录</h2>
+				<form method="post" onsubmit="return login()">
+					{% csrf_token %}
+					<div class="fields">
+						<div class="field half">
+							<label for="name">真实姓名</label>
+							<input type="text" name="name" id="name" required />
+						</div>
+						<div class="field half">
+							<label for="password">密码</label>
+							<input type="password" name="password" id="password" required />
+						</div>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="登录" class="primary" /></li>
+						<li><input type="button" onclick="javascript:window.location.href='#register'; setFocus()" value="没有账号？立即注册" /></li>
+						<li style="line-height: 44px;"><a href="#forget">忘记密码</a></li>
+					</ul>
+				</form>
+			</article>
+
+			<!-- Register -->
+			<article id="register">
+				<h2 class="major">😛 注册成为新朋友</h2>
+				<form method="post" onsubmit="return register()">
+					{% csrf_token %}
+					<div class="fields">
+						<div class="field half">
+							<label for="name">真实姓名</label>
+							<input type="text" name="name" id="name_r" required />
+						</div>
+						<div class="field half">
+							<label for="email">邮箱（用于找回密码）</label>
+							<input type="email" name="email" id="email_r" required />
+						</div>
+
+						<div class="field">
+							<label for="password">密码</label>
+							<input type="password" name="password" id="password_r" required />
+						</div>
+						<div class="field">
+							<label for="password2">确认密码</label>
+							<input type="password" name="password2" id="password2" required />
+						</div>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="注册" class="primary" /></li>
+						<li><input type="button" onclick="javascript:window.location.href='#login'; setFocus()" value="已有账号？马上登录" /></li>
+					</ul>
+				</form>
+			</article>
+
+			<!-- Forget -->
+			<article id="forget">
+				<h2 class="major">💡 忘记密码</h2>
+				<form method="post" onsubmit="return done()">
+					{% csrf_token %}
+					<div class="fields">
+						<div class="field half">
+							<label for="email">邮箱</label>
+							<input type="text" name="email" id="email_p" required />
+						</div>
+						<div class="field quarter">
+							<label for="rcode">验证码</label>
+							<input type="text" name="rcode" id="rcode" required />
+						</div>
+						<div class="field quarter">
+							<label for="rcode">&ensp;</label>
+							<input type="button" onclick="verify()" id="verify_input" value="验证" class="fit"/>
+						</div>
+						<div class="field">
+							<input type="button" value="获取验证码" id="gc" class="primary" onclick="get_code();" />
+						</div>
+						<hr>
+						<div class="field">
+							<label for="password">新密码</label>
+							<input type="password" name="password" id="password_p" disabled="disabled" required />
+						</div>
+						<div class="field">
+							<label for="password2">确认新密码</label>
+							<input type="password" name="password2" id="password2_p" disabled="disabled" required />
+						</div>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="确定" id="vbtn" class="primary" disabled="disabled" /></li>
+						<li><input type="button" onclick="javascript:window.location.href='#login'; setFocus()" value="想起密码？返回登录" /></li>
+					</ul>
+				</form>
+			</article>
+
+			<!-- Task1 -->
+			<article id="task1">
+				<h2 class="major">任务一： 基本环境搭建及配置</h2>
+
+				<br>
+
+				<section>
+					<h3 class="major">1. 在本机创建虚拟环境</h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>每一个虚拟环境都相当于一个新的 “操作系统”，你可以在这个新的环境里安装软件，保存资料.</li>
+						<li>Python 中提供了第三方模块<code>virtualenv</code>用于创建针对于 Python 的虚拟环境.</li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>下载 Python 第三方库<code>virtualenv</code>：</li><br>
+						<pre><code># 在终端下执行
+pip install virtualenv</code></pre>
+						<li>在项目文件夹下创建虚拟环境：</li><br>
+						<pre><code># 终端下执行
+# 默认项目文件夹为 `project`
+project/ $ virtualenv django_env
+
+# 创建好后 `project` 文件夹下会多出 `django_env` 文件夹</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+
+				<section>
+					<h3 class="major">2. 开启虚拟环境，并安装<code style="text-transform: none;">django 3.0</code></h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>Django 是 Python 目前最流行的一款 Web 框架，现已发行到 3.0+ 版本</li>
+						<li>Django 官网：<a href="https://www.djangoproject.com/" target="_blank">https://www.djangoproject.com/</a></li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>在项目文件夹下开启虚拟环境：</li><br>
+						<pre><code># 在终端下执行
+# 默认项目文件夹为 `project`
+project/ $ .\\env\\Scripts\\activate
+(env) project/ $
+
+# 成功开启后，终端命令提示符前会有虚拟环境文件夹名提醒</code></pre>
+						<li>在虚拟环境下安装 <code>django</code>：</li><br>
+						<pre><code># 终端下执行
+(env) project/ $ pip install django
+						</code></pre>
+						<li>退出虚拟环境：</li><br>
+						<pre><code># 终端下执行
+(env) project/ $ .\\env\\Scripts\\deactivate
+project/ $
+						</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+				</section>
+				
+				<div style="text-align: center;">
+					{% if task.task1 %}
+					<ul class="icons">
+						<li><a style="cursor: pointer;" title="已完成" onclick="task1(false)" class="fa fa-check"></a></li>
+					</ul>
+					{% else %}
+					<input type="button" onclick="task1(true)" value="完成打卡"  />
+					{% endif %}
+				</div>
+			</article>
+
+			<!-- Task2 -->
+			<article id="task2">
+			</article>
+
+			<!-- Task3 -->
+			<article id="task3">
+			</article>
+
+			<!-- Feedback -->
+			<article id="feedback">
+				<h2 class="major">👍 问题反馈</h2>
+					<form method="post" onsubmit="return feedback();">
+						<div class="fields">
+							<div class="field half">
+								<label for="name">您的称呼</label>
+								<input type="text" name="name" id="name_fb" required />
+							</div>
+							<div class="field half">
+								<label for="email">邮箱（选填）</label>
+								<input type="email" name="email" id="email_fb" placeholder="方便与您取得联系..." />
+							</div>
+							<div class="field">
+								<label for="message">反馈内容</label>
+								<textarea name="message" id="message" rows="4" style="resize: none;" required></textarea>
+							</div>
+						</div>
+						<ul class="actions">
+							<li><input type="submit" value="提交" class="primary" /></li>
+							<li><input type="reset" value="清空" /></li>
+						</ul>
+					</form>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">&copy; sicnu. cs <a href="#" target="" title="IT 培优">IT 培优</a> - made by <a href="#"
+                    title="fmw" target="">范茂伟</a>
+            </p>
+		</footer>
+
+	</div>
+
+	<!-- BG -->
+	<div id="bg"></div>
+
+
+	<!-- Scripts -->
+	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+	<script src="{% static 'assets/js/browser.min.js' %}"></script>
+	<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+	<script src="{% static 'assets/js/util.js' %}"></script>
+	<script src="{% static 'assets/js/main.js' %}"></script>
+	<script src="{% static 'js/sweetalert.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+	
+</body>
+
+</html>
