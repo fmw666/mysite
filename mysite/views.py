@@ -79,6 +79,9 @@ def new_pswd(request):
             return HttpResponse("-1")
         user.set_password(pswd)
         user.save()
+        code.right = False
+        code.value = ''
+        code.save()
         return HttpResponse("1")
     except:
         return HttpResponse("-1")
@@ -144,11 +147,6 @@ def index(request):
             return HttpResponse('0')
 
     else:
-        codes = Code.objects.all()
-        for code in codes:
-            code.right = False
-            code.value = ''
-            code.save()
         try:
             code = Code.objects.get(user=request.user) if hasattr(request.user, 'code') else Code.objects.create(user=request.user)
             task = Task.objects.get(user=request.user) if hasattr(request.user, 'task') else Task.objects.create(user=request.user)
