@@ -222,10 +222,10 @@ function get_code() {
                 // 失败
                 swal({   
                     title: "Error!",   
-                    text: '请输入正确的邮箱.<br/>（2秒后自动关闭）',   
+                    text: '邮箱不存在，请输入正确的邮箱.<br/>（2秒后自动关闭）',   
                     type: "error",
                     html: true,
-                    timer: 2000,   
+                    timer: 2000,
                     showConfirmButton: false
                 });
             }
@@ -236,9 +236,9 @@ function get_code() {
 // 找回密码——验证
 function verify() {
     var post_data = {
-        "status": 3
-        "code": document.getElementById("rcode").value
-	"email": document.getElementById("email_p").value
+        "status": 3,
+        "code": document.getElementById("rcode").value,
+        "email": document.getElementById("email_p").value
     };
 
     $.ajax({
