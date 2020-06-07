@@ -264,7 +264,7 @@ project/ $ .\\env\\Scripts\\activate
 					<h4>知识点</h4>
 					<ol>
 						<li>修改 <code>django</code> 配置文件在其 <code>mysite/settings.py</code> 文件中进行</li>
-						<li>需要有的基本配置包括：<code>语言</code>、<code>时区</code>、<code>模板文件目录</code>、<code>静态文件目录</code></li>
+						<li>需要有的基本配置包括：<code>语言</code>、<code>时区</code>、<code>模板文件目录</code>、<code>静态文件目录</code>、<code>数据库</code></li>
 					</ol>
 					<h4>操作</h4>
 					<ol>
@@ -275,12 +275,18 @@ project/ $ .\\env\\Scripts\\activate
 # 第 58 行
 'APP_DIRS': True,
 ...</code></pre>
+						<li>在 <code>mysite</code> 项目文件夹下创建 <code>templates</code> 模板目录：</li><br>
+						<pre><code># 终端下执行
+(env) mysite/ $ mkdir templates</code></pre>
 						<li>修改 <code>settings.py</code> 文件以添加静态文件 static 目录：</li><br>
 						<pre><code>STATIC_URL = '/static/'
 # 第 121 行后添加
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, 'static'),
 )</code></pre>
+						<li>在 <code>mysite</code> 项目文件夹下创建 <code>static</code> 静态文件目录：</li><br>
+						<pre><code># 终端下执行
+(env) mysite/ $ mkdir static</code></pre>
 						<li>修改 <code>settings.py</code> 文件以修改语言：</li><br>
 						<pre><code># 第 107 行修改
 LANGUAGE_CODE = 'zh-hans'</code></pre>
@@ -288,6 +294,22 @@ LANGUAGE_CODE = 'zh-hans'</code></pre>
 						<li>修改 <code>settings.py</code> 文件以修改时区：</li><br>
 						<pre><code># 第 109 行修改
 TIME_ZONE = 'Asia/Shanghai'</code></pre>
+						<li>修改 <code>settings.py</code> 文件以配置 Mysql 数据库：</li><br>
+						<pre><code># 第 76 行修改
+DATABASES = {
+	# 'default': {
+	#     'ENGINE': 'django.db.backends.sqlite3',
+	#     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	# }
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
+		'NAME': 'blog',                         # 数据库名，先前创建的
+		'USER': 'root',                         # 用户名，可以自己创建用户
+		'PASSWORD': 'password',                 # 密码
+		'HOST': '127.0.0.1',                    # mysql 服务所在的主机 ip
+		'PORT': '3306',                         # mysql 服务端口
+	}
+}</code></pre>
 					</ol>
 
 					<h4>相关截图</h4>
@@ -347,38 +369,55 @@ urlpatterns = [
 				<br>
 
 				<section>
-					<h3 class="major">5. 视图函数 <code style="text-transform: none;">Views</code> 及模板 <code>templates</code>：</h3>
+					<h3 class="major">6. 视图函数 <code style="text-transform: none;">Views</code> 及模板页面：</h3>
 					<h4>知识点</h4>
 					<ol>
-						<li>修改 <code>django</code> 配置文件在其 <code>mysite/settings.py</code> 文件中进行</li>
-						<li>需要有的基本配置包括：<code>语言</code>、<code>时区</code>、<code>模板文件目录</code>、<code>静态文件目录</code></li>
+						<li>所谓视图函数，就是通过编写函数的形式调用视图层文件（在 django 中为 <code>templates</code> 模板文件），通常都是展示给用户的图形界面.</li>
+						<li>视图函数也可以返回 <code>Http</code> 相应，即 <code>django</code> 中 <code>HttpResponse</code>.</li>
+						<li><code>urls.py</code> 路由中指定对应的视图函数 <code>views</code>，视图函数负责返回给用户页面 <code>html</code> 文件或 <code>http</code> 响应.</li>
 					</ol>
 					<h4>操作</h4>
 					<ol>
-						<li>修改 <code>settings.py</code> 文件以添加 template 目录：</li><br>
-						<pre><code>...
-# 第 57 行
-'DIRS': [os.path.join(BASE_DIR, 'templates'),],
-# 第 58 行
-'APP_DIRS': True,
-...</code></pre>
-						<li>修改 <code>settings.py</code> 文件以添加静态文件 static 目录：</li><br>
-						<pre><code>STATIC_URL = '/static/'
-# 第 121 行后添加
-STATICFILES_DIRS = (
-	os.path.join(BASE_DIR, 'static'),
-)</code></pre>
-						<li>修改 <code>settings.py</code> 文件以修改语言：</li><br>
-						<pre><code># 第 107 行修改
-LANGUAGE_CODE = 'zh-hans'</code></pre>
+						<li>修改 <code>blog/views.py</code> 文件：</li><br>
+						<pre><code>from django.shortcuts import render
 
-						<li>修改 <code>settings.py</code> 文件以修改时区：</li><br>
-						<pre><code># 第 109 行修改
-TIME_ZONE = 'Asia/Shanghai'</code></pre>
+# Create your views here.
+
+def index(request):
+	return render(request, 'blog/index.html')</code></pre>
+						<li>创建 <code>templates/blog/index.html</code> 文件，并编辑：</li><br>
+						<pre><code>Hello world!</code></pre>
+						<li>启动 <code>django</code> 项目，并访问 <a style="cursor: pointer;">http://127.0.0.1:8000/blog/</a> 查看效果.</li>
 					</ol>
 
 					<h4>相关截图</h4>
 					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+
+				<section>
+					<h3 class="major">7. 本节任务完，下为项目整体结构：</h3>
+					<pre><code># 项目整体结构如下
+├── mysite/
+│   ├── blog/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   ├── mysite/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   ├── static/
+│   ├── templates/
+│   │   ├── blog/
+│   │   │   ├── index.html
+│   ├── manage.py</code></pre>
 				</section>
 
 				<div style="text-align: center;">
@@ -394,6 +433,69 @@ TIME_ZONE = 'Asia/Shanghai'</code></pre>
 
 			<!-- Task2 -->
 			<article id="task2">
+				<h2 class="major">任务二：前端搭建及模板继承</h2>
+
+				<section>
+					<h3 class="major">6. 视图函数 <code style="text-transform: none;">Views</code> 及模板页面：</h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>所谓视图函数，就是通过编写函数的形式调用视图层文件（在 django 中为 <code>templates</code> 模板文件），通常都是展示给用户的图形界面.</li>
+						<li>视图函数也可以返回 <code>Http</code> 相应，即 <code>django</code> 中 <code>HttpResponse</code>.</li>
+						<li><code>urls.py</code> 路由中指定对应的视图函数 <code>views</code>，视图函数负责返回给用户页面 <code>html</code> 文件或 <code>http</code> 响应.</li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>修改 <code>blog/views.py</code> 文件：</li><br>
+						<pre><code>from django.shortcuts import render
+
+# Create your views here.
+
+def index(request):
+	return render(request, 'blog/index.html')</code></pre>
+						<li>创建 <code>templates/blog/index.html</code> 文件，并编辑：</li><br>
+						<pre><code>Hello world!</code></pre>
+						<li>启动 <code>django</code> 项目，并访问 <a style="cursor: pointer;">http://127.0.0.1:8000/blog/</a> 查看效果.</li>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+
+				<section>
+					<h3 class="major">7. 本节任务完，下为项目整体结构：</h3>
+					<pre><code># 项目整体结构如下
+├── mysite/
+│   ├── blog/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   ├── mysite/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   ├── static/
+│   ├── templates/
+│   │   ├── blog/
+│   │   │   ├── index.html
+│   ├── manage.py</code></pre>
+				</section>
+
+				<div style="text-align: center;">
+					{% if task.task2 %}
+					<ul class="icons">
+						<li><a style="cursor: pointer;" title="已完成" onclick="task2(false)" class="fa fa-check"></a></li>
+					</ul>
+					{% else %}
+					<input type="button" onclick="task2(true)" value="完成打卡"  />
+					{% endif %}
+				</div>
 			</article>
 
 			<!-- Task3 -->
