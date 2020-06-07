@@ -216,18 +216,171 @@ project/ $ .\\env\\Scripts\\activate
 # 成功开启后，终端命令提示符前会有虚拟环境文件夹名提醒</code></pre>
 						<li>在虚拟环境下安装 <code>django</code>：</li><br>
 						<pre><code># 终端下执行
-(env) project/ $ pip install django
-						</code></pre>
+(env) project/ $ pip install django</code></pre>
 						<li>退出虚拟环境：</li><br>
 						<pre><code># 终端下执行
 (env) project/ $ .\\env\\Scripts\\deactivate
-project/ $
-						</code></pre>
+project/ $</code></pre>
 					</ol>
 
 					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+
+				<section>
+					<h3 class="major">3. 创建 <code style="text-transform: none;">Django</code> 项目：</h3>
+					<h4>知识点</h4>
+					<p>&emsp;&emsp;无</p>
+					<h4>操作</h4>
+					<ol>
+						<li>在项目文件夹下开启虚拟环境：</li><br>
+						<pre><code># 在终端下执行
+# 默认项目文件夹为 `project`
+project/ $ .\\env\\Scripts\\activate
+(env) project/ $
+
+# 成功开启后，终端命令提示符前会有虚拟环境文件夹名提醒</code></pre>
+						<li>在项目文件夹下创建 <code>django</code> 项目：</li><br>
+						<pre><code># 终端下执行
+(env) project/ $ django-admin startproject mysite</code></pre>
+						<li>启动 <code>django</code> 项目：</li><br>
+						<pre><code># 终端下执行
+# 进入刚创建好的项目文件夹
+(env) project/ $ cd mysite
+# 启动项目，用默认 8000 端口开启
+(env) project/mysite/ $ python manage.py runserver 8000</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+				
+				<section>
+					<h3 class="major">4. 配置 <code style="text-transform: none;">Django</code> 项目：</h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>修改 <code>django</code> 配置文件在其 <code>mysite/settings.py</code> 文件中进行</li>
+						<li>需要有的基本配置包括：<code>语言</code>、<code>时区</code>、<code>模板文件目录</code>、<code>静态文件目录</code></li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>修改 <code>settings.py</code> 文件以添加 template 目录：</li><br>
+						<pre><code>...
+# 第 57 行
+'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+# 第 58 行
+'APP_DIRS': True,
+...</code></pre>
+						<li>修改 <code>settings.py</code> 文件以添加静态文件 static 目录：</li><br>
+						<pre><code>STATIC_URL = '/static/'
+# 第 121 行后添加
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR, 'static'),
+)</code></pre>
+						<li>修改 <code>settings.py</code> 文件以修改语言：</li><br>
+						<pre><code># 第 107 行修改
+LANGUAGE_CODE = 'zh-hans'</code></pre>
+
+						<li>修改 <code>settings.py</code> 文件以修改时区：</li><br>
+						<pre><code># 第 109 行修改
+TIME_ZONE = 'Asia/Shanghai'</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
 				</section>
 				
+				<br>
+
+				<section>
+					<h3 class="major">5. 创建 app 应用 <code style="text-transform: none;">blog</code>：</h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>在 <code>django</code> 项目中创建 app 应用指令：</li><br>
+						<pre><code>python manage.py startapp app_name</code></pre>
+						<li>主路由在 <code>mysite.urls</code> 中配置，子路由在创建的 <code>app.urls</code> 中配置</li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>创建 <code>app</code> 应用，命名为 <code>blog</code>：</li><br>
+						<pre><code># 终端下执行
+(env) project/mysite $ python manage.py startapp blog</code></pre>
+						<li>在 <code>settings.py</code> 文件中配置 <code>blog</code> 应用：</li><br>
+						<pre><code># 第 33 行中添加 blog
+INSTALLED_APPS = [
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'blog',
+]</code></pre>
+						<li>在 <code>mysite/</code> 项目文件夹下，修改 <code>urls.py</code> 文件，分配 <code>/blog/</code> 路由：</li><br>
+						<pre><code>from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+	path('admin/', admin.site.urls),
+	path('blog/', include('blog.urls', namespace='blog'))
+]</code></pre>
+
+						<li>在 <code>blog/</code> 应用文件夹下，新建 <code>urls.py</code> 文件，并分配路由 ''，指向视图函数 <code>index</code>，且命名为 index：</li><br>
+						<pre><code>from django.urls import path
+from . import views
+
+app_name = 'blog'
+
+urlpatterns = [
+	path('', views.index, name='index'),
+]</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
+				<br>
+
+				<section>
+					<h3 class="major">5. 视图函数 <code style="text-transform: none;">Views</code> 及模板 <code>templates</code>：</h3>
+					<h4>知识点</h4>
+					<ol>
+						<li>修改 <code>django</code> 配置文件在其 <code>mysite/settings.py</code> 文件中进行</li>
+						<li>需要有的基本配置包括：<code>语言</code>、<code>时区</code>、<code>模板文件目录</code>、<code>静态文件目录</code></li>
+					</ol>
+					<h4>操作</h4>
+					<ol>
+						<li>修改 <code>settings.py</code> 文件以添加 template 目录：</li><br>
+						<pre><code>...
+# 第 57 行
+'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+# 第 58 行
+'APP_DIRS': True,
+...</code></pre>
+						<li>修改 <code>settings.py</code> 文件以添加静态文件 static 目录：</li><br>
+						<pre><code>STATIC_URL = '/static/'
+# 第 121 行后添加
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR, 'static'),
+)</code></pre>
+						<li>修改 <code>settings.py</code> 文件以修改语言：</li><br>
+						<pre><code># 第 107 行修改
+LANGUAGE_CODE = 'zh-hans'</code></pre>
+
+						<li>修改 <code>settings.py</code> 文件以修改时区：</li><br>
+						<pre><code># 第 109 行修改
+TIME_ZONE = 'Asia/Shanghai'</code></pre>
+					</ol>
+
+					<h4>相关截图</h4>
+					<p>&emsp;&emsp;无</p>
+				</section>
+
 				<div style="text-align: center;">
 					{% if task.task1 %}
 					<ul class="icons">
