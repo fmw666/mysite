@@ -37,7 +37,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('user', 'task1', 'task1_time' )
+    list_display = ('user', 'task1', 'task1_time', 'task2', 'task2_time' )
 
 @admin.register(Code)
 class CodeAdmin(admin.ModelAdmin):
