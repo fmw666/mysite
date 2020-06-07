@@ -13,6 +13,8 @@ from .models import Feedback, Task, Code
 
 import json
 
+import datetime
+
 # Create your views here.
 
 # 登录
@@ -136,13 +138,17 @@ def index(request):
             Feedback.objects.create(name=name, email=email, content=content)
             return HttpResponse("1")
         elif status == '11':
-            task = Task.objects.get(user=request.user)
-            bol = False
-            if request.POST.get("bol") == "true":
-                bol = True
-            task.task1 = bol
-            task.save()
-            return HttpResponse("1")
+            try:
+                task = Task.objects.get(user=request.user)
+                bol = False
+                if request.POST.get("bol") == "true":
+                    bol = True
+                task.task1 = bol
+                task.task1_time = datetime.datetime.now()
+                task.save()
+                return HttpResponse("1")
+            except:
+                return HttpResponse("0")
         else:
             return HttpResponse('0')
 

@@ -13,6 +13,7 @@ class Feedback(models.Model):
 class Task(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     task1 = models.BooleanField(default=False)
+    task1_time = models.DateTimeField(verbose_name='上次点击', null=True, blank=True, default=None)
 
     def __str__(self):
         return self.user.username + 'の任务清单'
@@ -34,7 +35,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('user', 'task1', )
+    list_display = ('user', 'task1', 'task1_time' )
 
 @admin.register(Code)
 class CodeAdmin(admin.ModelAdmin):
