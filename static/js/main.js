@@ -382,6 +382,18 @@ function task1(bol) {
             if(e == "1") {
                 location.reload(true);
             }
+            else if(e == "0") {
+                // 密码不一致
+                swal({   
+                    title: "请先登录!",   
+                    text: '（2秒后自动关闭）',
+                    type: "error",
+                    html: true,
+                    timer: 2000,   
+                    showConfirmButton: false
+                });
+                location.replace('/#login');
+            }
         }
     });
 }
