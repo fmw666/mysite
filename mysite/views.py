@@ -149,6 +149,18 @@ def index(request):
                 return HttpResponse("1")
             except:
                 return HttpResponse("0")
+        elif status == '12':
+            try:
+                task = Task.objects.get(user=request.user)
+                bol = False
+                if request.POST.get("bol") == "true":
+                    bol = True
+                task.task2 = bol
+                task.task2_time = datetime.datetime.now()
+                task.save()
+                return HttpResponse("1")
+            except:
+                return HttpResponse("0")
         else:
             return HttpResponse('0')
 

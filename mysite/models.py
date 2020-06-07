@@ -14,6 +14,8 @@ class Task(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     task1 = models.BooleanField(default=False)
     task1_time = models.DateTimeField(verbose_name='上次点击', null=True, blank=True, default=None)
+    task2 = models.BooleanField(default=False)
+    task2_time = models.DateTimeField(verbose_name='上次点击', null=True, blank=True, default=None)
 
     def __str__(self):
         return self.user.username + 'の任务清单'
