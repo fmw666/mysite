@@ -383,7 +383,36 @@ function task1(bol) {
                 location.reload(true);
             }
             else if(e == "0") {
-                // 密码不一致
+                swal({   
+                    title: "请先登录!",   
+                    text: '（2秒后自动关闭）',
+                    type: "error",
+                    html: true,
+                    timer: 2000,   
+                    showConfirmButton: false
+                });
+                location.replace('/#login');
+            }
+        }
+    });
+}
+
+// 任务二提交
+function task2(bol) {
+    var post_data = {
+        "status": 12,
+        "bol": bol
+    };
+
+    $.ajax({
+        url: "/",
+        type: "POST",
+        data: post_data,
+        success: function(e) {
+            if(e == "1") {
+                location.reload(true);
+            }
+            else if(e == "0") {
                 swal({   
                     title: "请先登录!",   
                     text: '（2秒后自动关闭）',
