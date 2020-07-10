@@ -22,6 +22,9 @@
 1. 启动服务
 
   ```bash
+  // 初始化
+  $ uwsgi --ini /home/mysite_uwsgi/mysite.ini
+  // 重启
   $ uwsgi --reload /home/mysite_uwsgi/master.pid
   $ service nginx restart
   ```
