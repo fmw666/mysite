@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .tasks import send_email
+from celery_tasks.email.tasks import send_email
 from django.conf import settings
 
 from .models import Feedback, Task, Code
@@ -108,7 +108,7 @@ def index(request):
                 email = request.POST.get("email")
                 if email == '':
                     return HttpResponse("0")
-                send_email(email, User.objects.get(email=email).username)
+                send_email.delay(email, User.objects.get(email=email).username)
                 return HttpResponse("1")
             except:
                 return HttpResponse("0")

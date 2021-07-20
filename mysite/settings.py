@@ -25,7 +25,7 @@ SECRET_KEY = 'jxi(svr&r)n)6$pv(fku6#t3(8yc6q&=oat89h3gfi5cgyda98'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['112.124.19.183']
+ALLOWED_HOSTS = ['112.124.19.183', '127.0.0.1']
 
 
 # Application definition
@@ -128,10 +128,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "/static/"),
+    os.path.join(BASE_DIR, "static"),
 )
 
-STATIC_ROOT = '/home/mysite/static/'
+# STATIC_ROOT = '/home/mysite/static/'
 
 
 # 邮箱配置
